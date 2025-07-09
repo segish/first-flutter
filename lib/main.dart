@@ -77,10 +77,10 @@ class _MyHomePageState extends State<MyHomePage> {
     switch (selectedIndex) {
       case 0:
         page = GeneratorPage();
-        break;
       case 1:
         page = FavoritesPage();
-        break;
+      case 2:
+        page = FavoritesListPage();
       default:
         throw UnimplementedError('no widget for $selectedIndex');
     }
@@ -100,6 +100,10 @@ class _MyHomePageState extends State<MyHomePage> {
                     NavigationRailDestination(
                       icon: Icon(Icons.favorite),
                       label: Text('Favorites'),
+                    ),
+                    NavigationRailDestination(
+                      icon: Icon(Icons.list),
+                      label: Text('Favorites List'),
                     ),
                   ],
                   selectedIndex: selectedIndex,
@@ -219,6 +223,43 @@ class FavoritesPage extends StatelessWidget {
                   ],
                 )
               : SizedBox(height: 10),
+        ],
+      ),
+    );
+  }
+}
+
+class FavoritesListPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    var appState = context.watch<MyAppState>();
+    var pair = appState.favorites;
+
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          appState.favorites.isEmpty
+              ? Text('No favorites yet', style: TextStyle(fontSize: 24))
+              : Column(
+                  children: [
+                    Text(
+                      'Total favorites: ${appState.favorites.length}',
+                      style: TextStyle(fontSize: 20),
+                    ),
+                    for (var item in pair)
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(Icons.fork_right, color: Colors.red),
+                        Text(
+                          item.asLowerCase,
+                          style: TextStyle(fontSize: 20),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
         ],
       ),
     );
