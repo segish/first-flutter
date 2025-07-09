@@ -37,16 +37,15 @@ class MyAppState extends ChangeNotifier {
   void toggleFavorite() {
     if (favorites.contains(current)) {
       favorites.remove(current);
+      if (favorites.isEmpty) {
+        favIndex = 0;
+        current = WordPair.random();
+      } else {
+        favIndex = (favIndex) % favorites.length;
+        current = favorites[favIndex];
+      }
     } else {
       favorites.add(current);
-    }
-    
-    if (favorites.isEmpty) {
-      favIndex = 0;
-      current = WordPair.random();
-    }else{
-    favIndex = (favIndex) % favorites.length;
-    current = favorites[favIndex];
     }
     notifyListeners();
   }
